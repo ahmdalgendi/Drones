@@ -1,6 +1,7 @@
 package com.start.drones.Drone;
 
 import com.start.drones.Drone.Exceptions.DroneNotFoundException;
+import com.start.drones.Medication.Medication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -19,12 +20,14 @@ public class DroneService {
         this.droneRepository = droneRepository;
     }
 
-    public List<Drone> index() {
-        return droneRepository.findAll();
+    @Transactional
+    public List<DroneDTO> index() {
+        return droneRepository.findAll().stream().map(DroneDTO::new).collect(java.util.stream.Collectors.toList());
     }
 
-    public Drone store(@Valid DroneDTO drone) {
-        return droneRepository.save(new Drone(drone));
+    @Transactional
+    public DroneDTO store(@Valid DroneDTO drone) {
+        return new DroneDTO(droneRepository.save(new Drone(drone)));
     }
 
     @Transactional
@@ -69,4 +72,38 @@ public class DroneService {
         return drone.getState() == State.IDLE;
     }
 
+    public DroneDTO show(long id) {
+        Drone drone = this.findById(id);
+        return new DroneDTO(drone);
+    }
+
+    protected boolean isIdle(Drone drone) {
+        return drone.getState() == State.IDLE;
+    }
+
+    public DroneDTO loadMedications(long id, TripDTO trip, List<Medication> medications) {
+        Drone drone = this.findById(id);
+        if (canLoadMedications(drone, medications)) {
+            drone.setState(State.LOADING);
+        } else {
+            throw new DroneNotFoundException("Drone not found");
+        }
+        droneRepository.save(drone);
+        //start async task to load the trip
+
+        return new DroneDTO(drone);
+    }
+
+
+    protected boolean canLoadMedications(Drone drone, List<Medication> medications) {
+        double medicationWeight = 0;
+        if (!isIdle(drone)) {
+            return false;
+        }
+
+        for (Medication medication : medications) {
+            medicationWeight += medication.getWeight();
+        }
+        return drone.getMaxWeight() >= medicationWeight && drone.getBatteryPercentage() >= Drone.MIN_BATTERY_FOR_LOADING;
+    }
 }

@@ -1,5 +1,6 @@
 package com.start.drones.Drone;
 
+import com.start.drones.Trip.Trip;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -17,10 +19,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Table(name = "drones")
 public class Drone {
-    //    - serial number (100 characters max);
-//- model (Lightweight, Middleweight, Cruiserweight, Heavyweight); - weight limit (500gr max);
-//- battery capacity (percentage);
-//- state (IDLE, LOADING, LOADED, DELIVERING, DELIVERED, RETURNING).
+    final static double MIN_BATTERY_FOR_LOADING = 25;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -31,9 +30,12 @@ public class Drone {
 
     private State state;
 
-    private float batteryPercentage;
+    private double batteryPercentage;
 
     private double maxWeight;
+
+    @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL)
+    private List<Trip> trips;
 
     public Drone(DroneDTO drone) {
         this.serialNumber = drone.getSerialNumber();
