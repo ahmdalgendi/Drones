@@ -1,5 +1,6 @@
 package com.start.drones.Drone;
 
+import com.start.drones.Drone.Exceptions.DroneNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -25,6 +26,7 @@ public class DroneService {
     public Drone store(@Valid DroneDTO drone) {
         return droneRepository.save(new Drone(drone));
     }
+
     @Transactional
     public Drone patch(long id, Map<String, Object> updates) {
         Optional<Drone> drone = droneRepository.findById(id);
@@ -33,8 +35,11 @@ public class DroneService {
             updates.forEach((key, value) -> {
                 System.out.println("Key: " + key + " Value: " + value);
                 Field field = ReflectionUtils.findField(Drone.class, key);
-                ReflectionUtils.makeAccessible(field);
-                ReflectionUtils.setField(field, drone.get(), value);
+                if (field != null) {
+                    ReflectionUtils.makeAccessible(field);
+                    ReflectionUtils.setField(field, drone.get(), value);
+                }
+
             });
         } else
             throw new DroneNotFoundException("Drone with id {" + id + "} not found");

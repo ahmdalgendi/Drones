@@ -1,4 +1,4 @@
-package com.start.drones.Drone;
+package com.start.drones.Drone.Exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

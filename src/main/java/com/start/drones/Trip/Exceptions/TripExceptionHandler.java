@@ -1,5 +1,7 @@
-package com.start.drones.Drone;
+package com.start.drones.Trip.Exceptions;
 
+import com.start.drones.Drone.ApiError;
+import com.start.drones.Trip.Exceptions.TripErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class DroneExceptionHandler extends ResponseEntityExceptionHandler {
-    public ResponseEntity<DroneErrorResponse> droneNotFoundHandler(
-            DroneNotFoundException exception,
+public class TripExceptionHandler extends ResponseEntityExceptionHandler {
+    public ResponseEntity<TripErrorResponse> droneNotFoundHandler(
+            TripNotFoundException exception,
             HttpServletRequest req) {
-        DroneErrorResponse error = new DroneErrorResponse(
+        TripErrorResponse error = new TripErrorResponse(
                 exception.getMessage(),
                 HttpStatus.NOT_FOUND.value(),
                 req.getRequestURI(),
@@ -52,10 +54,10 @@ public class DroneExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler //for all other exceptions
-    public ResponseEntity<DroneErrorResponse> droneException(
+    public ResponseEntity<TripErrorResponse> droneException(
             Exception exception,
             HttpServletRequest req) {
-        DroneErrorResponse error = new DroneErrorResponse(
+        TripErrorResponse error = new TripErrorResponse(
                 exception.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),
                 req.getRequestURI(),

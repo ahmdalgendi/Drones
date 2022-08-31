@@ -1,4 +1,4 @@
-package com.start.drones.Drone;
+package com.start.drones.Drone.Exceptions;
 
 public class DroneNotFoundException extends RuntimeException {
 
