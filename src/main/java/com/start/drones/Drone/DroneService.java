@@ -1,10 +1,10 @@
 package com.start.drones.Drone;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +22,8 @@ public class DroneService {
         return droneRepository.findAll();
     }
 
-    public Drone store(Drone drone) {
-        return droneRepository.save(drone);
+    public Drone store(@Valid DroneDTO drone) {
+        return droneRepository.save(new Drone(drone));
     }
     @Transactional
     public Drone patch(long id, Map<String, Object> updates) {
@@ -57,6 +57,11 @@ public class DroneService {
         } else {
             throw new DroneNotFoundException("Drone not found");
         }
+    }
+
+    public boolean canLoad(long id) {
+        Drone drone = this.findById(id);
+        return drone.getState() == State.IDLE;
     }
 
 }

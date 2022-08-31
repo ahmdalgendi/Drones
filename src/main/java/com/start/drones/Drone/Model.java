@@ -5,4 +5,5 @@ public enum Model {
     Middleweight,
     Cruiserweight,
     Heavyweight
+
 }

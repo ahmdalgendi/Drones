@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Table(name = "drones")
 public class Drone {
-//    - serial number (100 characters max);
+    //    - serial number (100 characters max);
 //- model (Lightweight, Middleweight, Cruiserweight, Heavyweight); - weight limit (500gr max);
 //- battery capacity (percentage);
 //- state (IDLE, LOADING, LOADED, DELIVERING, DELIVERED, RETURNING).
@@ -30,11 +30,18 @@ public class Drone {
     private Model model;
 
     private State state;
-    @Min(value = 0 , message = "Weight must be greater than 0")
-    @Max(value = 100 , message = "Battery capacity must be between 0 and 100")
+
     private float batteryPercentage;
-    @Max(value = 500)
+
     private double maxWeight;
+
+    public Drone(DroneDTO drone) {
+        this.serialNumber = drone.getSerialNumber();
+        this.model = Model.valueOf(drone.getModel());
+        this.state = drone.getState();
+        this.batteryPercentage = drone.getBatteryPercentage();
+        this.maxWeight = drone.getMaxWeight();
+    }
 
     @Override
     public String toString() {

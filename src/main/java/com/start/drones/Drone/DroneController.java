@@ -1,8 +1,10 @@
 package com.start.drones.Drone;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class DroneController {
     }
 
     @PostMapping
-    public Drone store(@RequestBody Drone drone) {
+    public Drone store(@Valid @RequestBody DroneDTO drone) {
         return droneService.store(drone);
     }
 
@@ -43,8 +45,9 @@ public class DroneController {
     @GetMapping("{id}/can-load")
     public Map<String, String> canLoad(@PathVariable("id") long id) {
         Map<String, String> json = new HashMap<>();
+        boolean canLoad = droneService.canLoad(id);
         State level = droneService.findById(id).getState();
-        json.put("canLoad", String.valueOf(level == State.IDLE));
+        json.put("canLoad", String.valueOf(canLoad));
         return json;
     }
 
