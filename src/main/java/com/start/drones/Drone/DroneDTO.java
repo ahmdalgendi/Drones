@@ -24,7 +24,7 @@ public class DroneDTO {
     private State state;
     @Min(value = 0, message = "Weight must be greater than 0")
     @Max(value = 100, message = "Battery capacity must be between 0 and 100")
-    private float batteryPercentage;
+    private double batteryPercentage;
     @Max(value = 500)
     private double maxWeight;
 

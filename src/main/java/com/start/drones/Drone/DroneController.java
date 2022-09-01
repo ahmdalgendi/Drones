@@ -1,8 +1,6 @@
 package com.start.drones.Drone;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.start.drones.Medication.Medication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -53,9 +51,10 @@ public class DroneController {
         return json;
     }
 
-    @PostMapping("{id}/load")
-    public DroneDTO load(@PathVariable("id") long id, @Valid @RequestBody TripDTO trip, List<Medication> medications) {
-        return droneService.loadMedications(id, trip , medications);
+    @RequestMapping(value = "{id}/load", method = RequestMethod.POST,
+            consumes = "application/json")
+    public Object load(@PathVariable("id") long id, @RequestBody LoadDroneRequest loadDroneRequest) {
+        return droneService.load(id, loadDroneRequest);
     }
 
 }

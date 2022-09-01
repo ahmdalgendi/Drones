@@ -28,7 +28,7 @@ public class Medication {
                 ", name='" + name + '\'' +
                 ", weight=" + weight +
                 ", code='" + code + '\'' +
-                ", photoUrl='" + photoUrl + '\'' +
+//                ", photoUrl='" + photoUrl + '\'' +
                 '}';
     }
 
@@ -36,5 +36,5 @@ public class Medication {
     @Min(value = 0, message = "Weight must be greater than 0")
     private double weight;
     private String code;
-    private String photoUrl;
+//    private String photoUrl;
 }

@@ -4,6 +4,7 @@ import com.start.drones.Drone.ApiError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -52,6 +53,18 @@ public class DroneExceptionHandler extends ResponseEntityExceptionHandler {
                 ex, apiError, headers, apiError.getStatus(), request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<DroneErrorResponse> droneNotReadableException(
+            RuntimeException exception,
+            HttpServletRequest req) {
+        DroneErrorResponse error = new DroneErrorResponse(
+                exception.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                req.getRequestURI(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler //for all other exceptions
     public ResponseEntity<DroneErrorResponse> droneException(
             Exception exception,

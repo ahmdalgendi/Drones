@@ -26,6 +26,5 @@ public class TripDTO {
         this.droneId = trip.getDrone().getId();
         this.loadedAt = trip.getLoadedAt();
         this.deliveredAt = trip.getDeliveredAt();
-        this.drone = trip.getDrone();
     }
 }

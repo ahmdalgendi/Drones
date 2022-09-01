@@ -2,6 +2,7 @@ package com.start.drones.Drone;
 
 import com.start.drones.Drone.Exceptions.DroneNotFoundException;
 import com.start.drones.Medication.Medication;
+import com.start.drones.Medication.MedicationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -15,9 +16,11 @@ import java.util.Optional;
 @Service
 public class DroneService {
     final DroneRepository droneRepository;
+    final MedicationRepository medicationRepository;
 
-    DroneService(DroneRepository droneRepository) {
+    DroneService(DroneRepository droneRepository, MedicationRepository medicationRepository) {
         this.droneRepository = droneRepository;
+        this.medicationRepository = medicationRepository;
     }
 
     @Transactional
@@ -81,19 +84,6 @@ public class DroneService {
         return drone.getState() == State.IDLE;
     }
 
-    public DroneDTO loadMedications(long id, TripDTO trip, List<Medication> medications) {
-        Drone drone = this.findById(id);
-        if (canLoadMedications(drone, medications)) {
-            drone.setState(State.LOADING);
-        } else {
-            throw new DroneNotFoundException("Drone not found");
-        }
-        droneRepository.save(drone);
-        //start async task to load the trip
-
-        return new DroneDTO(drone);
-    }
-
 
     protected boolean canLoadMedications(Drone drone, List<Medication> medications) {
         double medicationWeight = 0;
@@ -105,5 +95,22 @@ public class DroneService {
             medicationWeight += medication.getWeight();
         }
         return drone.getMaxWeight() >= medicationWeight && drone.getBatteryPercentage() >= Drone.MIN_BATTERY_FOR_LOADING;
+    }
+
+    public Object load(long id, LoadDroneRequest loadDroneRequest) {
+        Drone drone = this.findById(id);
+        List<Medication> medicationEntities = medicationRepository.findAllById(loadDroneRequest.getMed());
+        if (medicationEntities.size() != loadDroneRequest.getMed().size()) {
+            throw new RuntimeException("Medication not found");
+        }
+        if (canLoadMedications(drone, medicationEntities)) {
+            drone.setState(State.LOADING);
+        } else {
+            throw new RuntimeException("Drone can't load medications");
+        }
+        droneRepository.save(drone);
+        //start async task to load the trip
+
+        return new DroneDTO(drone);
     }
 }
