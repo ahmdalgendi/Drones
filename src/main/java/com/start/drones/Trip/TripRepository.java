@@ -1,9 +1,13 @@
 package com.start.drones.Trip;
 
+import com.start.drones.Drone.Drone;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
+    Optional<Trip> findByDroneOrderByDeliveredAtDesc(Drone drone);
 }

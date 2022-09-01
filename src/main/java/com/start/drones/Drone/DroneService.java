@@ -4,7 +4,8 @@ import com.start.drones.Drone.DroneLoader.DroneLoaderService;
 import com.start.drones.Drone.Exceptions.DroneNotFoundException;
 import com.start.drones.Medication.Medication;
 import com.start.drones.Medication.MedicationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.start.drones.Trip.Trip;
+import com.start.drones.Trip.TripRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -20,11 +21,13 @@ public class DroneService {
     final DroneRepository droneRepository;
     final MedicationRepository medicationRepository;
     final DroneLoaderService droneLoaderService;
+    final TripRepository tripRepository;
 
-    DroneService(DroneRepository droneRepository, MedicationRepository medicationRepository, DroneLoaderService droneLoaderService) {
+    DroneService(DroneRepository droneRepository, MedicationRepository medicationRepository, DroneLoaderService droneLoaderService, TripRepository tripRepository) {
         this.droneRepository = droneRepository;
         this.medicationRepository = medicationRepository;
         this.droneLoaderService = droneLoaderService;
+        this.tripRepository = tripRepository;
     }
 
     @Transactional
@@ -115,11 +118,15 @@ public class DroneService {
         droneRepository.save(drone);
         //start async task to load the trip
         try {
-            droneLoaderService.loadMedicationsToDrone(drone.getId(), loadDroneRequest.getMed() , loadDroneRequest.getTrip());
+            droneLoaderService.loadMedicationsToDrone(drone.getId(), loadDroneRequest.getMed(), loadDroneRequest.getTrip());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         return new DroneDTO(drone);
+    }
+
+    Optional<Trip> getMostRecentTrip(Drone drone) {
+        return tripRepository.findByDroneOrderByDeliveredAtDesc(drone);
     }
 }

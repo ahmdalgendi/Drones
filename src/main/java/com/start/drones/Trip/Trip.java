@@ -53,4 +53,14 @@ public class Trip {
     public void addMedications(List<Medication> medicationEntities) {
         medications.addAll(medicationEntities);
     }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", loadedAt=" + loadedAt +
+                ", timeToDeliver=" + timeToDeliver +
+                ", deliveredAt=" + deliveredAt +
+                '}';
+    }
 }
