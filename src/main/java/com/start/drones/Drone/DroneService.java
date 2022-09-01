@@ -1,8 +1,10 @@
 package com.start.drones.Drone;
 
+import com.start.drones.Drone.DroneLoader.DroneLoaderService;
 import com.start.drones.Drone.Exceptions.DroneNotFoundException;
 import com.start.drones.Medication.Medication;
 import com.start.drones.Medication.MedicationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -17,10 +19,12 @@ import java.util.Optional;
 public class DroneService {
     final DroneRepository droneRepository;
     final MedicationRepository medicationRepository;
+    final DroneLoaderService droneLoaderService;
 
-    DroneService(DroneRepository droneRepository, MedicationRepository medicationRepository) {
+    DroneService(DroneRepository droneRepository, MedicationRepository medicationRepository, DroneLoaderService droneLoaderService) {
         this.droneRepository = droneRepository;
         this.medicationRepository = medicationRepository;
+        this.droneLoaderService = droneLoaderService;
     }
 
     @Transactional
@@ -110,6 +114,11 @@ public class DroneService {
         }
         droneRepository.save(drone);
         //start async task to load the trip
+        try {
+            droneLoaderService.loadMedicationsToDrone(drone.getId(), loadDroneRequest.getMed() , loadDroneRequest.getTrip());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return new DroneDTO(drone);
     }

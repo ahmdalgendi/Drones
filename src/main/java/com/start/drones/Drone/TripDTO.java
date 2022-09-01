@@ -1,30 +1,34 @@
 package com.start.drones.Drone;
 
+import com.start.drones.Medication.Medication;
 import com.start.drones.Trip.Trip;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TripDTO {
-    private Long id;
+    @Min(1)
     private int timeToDeliver;
-    private Long droneId;
-    LocalDateTime loadedAt;
-    LocalDateTime deliveredAt;
-
+    List<MedicationDTO> medications = new ArrayList<>();
 
     public TripDTO(Trip trip) {
-        this.id = trip.getId();
         this.timeToDeliver = trip.getTimeToDeliver();
-        this.droneId = trip.getDrone().getId();
-        this.loadedAt = trip.getLoadedAt();
-        this.deliveredAt = trip.getDeliveredAt();
+        List<Medication> medicationList = trip.getMedications();
+        if (medicationList != null) {
+            for (Medication medication : medicationList) {
+                this.medications.add(new MedicationDTO(medication));
+            }
+        }
     }
 }
