@@ -15,15 +15,15 @@ public class TripConfiguration {
     CommandLineRunner TripCommandRunner(TripRepository tripRepository, DroneRepository droneRepository) {
         return args -> {
             List<Trip> list = new ArrayList<>();
-            list.add(new Trip(
-                    1L,
-                    LocalDateTime.now().minusDays(2),
-                    //1 day in minutes
-                    1440,
-                    LocalDateTime.now(),
-                    droneRepository.findFirstById(1L)
-
-            ));
+//            list.add(new Trip(
+//                    1L,
+//                    LocalDateTime.now().minusDays(2),
+//                    //1 day in minutes
+//                    1440,
+//                    LocalDateTime.now(),
+//                    droneRepository.findFirstById(1L)
+//
+//            ));
 
             tripRepository.saveAll(list);
         };

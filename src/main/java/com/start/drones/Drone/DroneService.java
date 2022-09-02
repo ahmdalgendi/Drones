@@ -79,7 +79,7 @@ public class DroneService {
 
     public boolean canLoad(long id) {
         Drone drone = this.findById(id);
-        return drone.getState() == State.IDLE;
+        return drone.getDroneState() == DroneState.IDLE;
     }
 
     public DroneDTO show(long id) {
@@ -88,7 +88,7 @@ public class DroneService {
     }
 
     protected boolean isIdle(Drone drone) {
-        return drone.getState() == State.IDLE;
+        return drone.getDroneState() == DroneState.IDLE;
     }
 
 
@@ -111,7 +111,7 @@ public class DroneService {
             throw new RuntimeException("Medication not found");
         }
         if (canLoadMedications(drone, medicationEntities)) {
-            drone.setState(State.LOADING);
+            drone.setDroneState(DroneState.LOADING);
         } else {
             throw new RuntimeException("Drone can't load medications");
         }

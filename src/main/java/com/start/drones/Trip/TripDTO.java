@@ -1,12 +1,16 @@
 package com.start.drones.Trip;
 
 import com.start.drones.Drone.Drone;
+import com.start.drones.Medication.Medication;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -17,7 +21,9 @@ public class TripDTO {
     private Long droneId;
     LocalDateTime loadedAt;
     LocalDateTime deliveredAt;
+
     Drone drone;
+    List<Medication> medications = new ArrayList<>();
 
 
     public TripDTO(Trip trip) {

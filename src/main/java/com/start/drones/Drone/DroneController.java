@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,7 +45,7 @@ public class DroneController {
     public Map<String, String> canLoad(@PathVariable("id") long id) {
         Map<String, String> json = new HashMap<>();
         boolean canLoad = droneService.canLoad(id);
-        State level = droneService.findById(id).getState();
+        DroneState level = droneService.findById(id).getDroneState();
         json.put("canLoad", String.valueOf(canLoad));
         return json;
     }

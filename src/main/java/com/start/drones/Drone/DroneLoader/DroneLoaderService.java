@@ -3,7 +3,7 @@ package com.start.drones.Drone.DroneLoader;
 import ch.qos.logback.classic.Logger;
 import com.start.drones.Drone.Drone;
 import com.start.drones.Drone.DroneRepository;
-import com.start.drones.Drone.State;
+import com.start.drones.Drone.DroneState;
 import com.start.drones.Drone.TripDTO;
 import com.start.drones.Medication.Medication;
 import com.start.drones.Medication.MedicationRepository;
@@ -40,12 +40,12 @@ public class DroneLoaderService {
         tripRepository.save(trip);
 
 
-        drone.setState(State.LOADED);
+        drone.setDroneState(DroneState.LOADED);
         log.info("Drone loaded");
         droneRepository.save(drone);
         Thread.sleep(1000);
         // set state to delivering
-        drone.setState(State.DELIVERING);
+        drone.setDroneState(DroneState.DELIVERING);
         droneRepository.save(drone);
         log.info("Drone delivering");
     }

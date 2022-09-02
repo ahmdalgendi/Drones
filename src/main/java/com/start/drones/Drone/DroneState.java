@@ -1,6 +1,6 @@
 package com.start.drones.Drone;
 
-public enum State {
+public enum DroneState {
     IDLE,
     LOADING,
     LOADED,

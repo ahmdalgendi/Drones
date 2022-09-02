@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @AllArgsConstructor
@@ -29,7 +26,7 @@ public class Drone {
     private String serialNumber;
     private Model model;
 
-    private State state;
+    private DroneState droneState;
 
     private double batteryPercentage;
 
@@ -41,7 +38,7 @@ public class Drone {
     public Drone(DroneDTO drone) {
         this.serialNumber = drone.getSerialNumber();
         this.model = Model.valueOf(drone.getModel());
-        this.state = drone.getState();
+        this.droneState = DroneState.valueOf(drone.getDroneState());
         this.batteryPercentage = drone.getBatteryPercentage();
         this.maxWeight = drone.getMaxWeight();
     }
@@ -52,7 +49,7 @@ public class Drone {
                 "id=" + id +
                 ", serialNumber='" + serialNumber + '\'' +
                 ", model=" + model +
-                ", state=" + state +
+                ", state=" + droneState +
                 ", batteryPercentage=" + batteryPercentage +
                 ", maxWeight=" + maxWeight +
                 '}';

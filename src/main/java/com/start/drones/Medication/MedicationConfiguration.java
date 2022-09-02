@@ -1,9 +1,5 @@
 package com.start.drones.Medication;
 
-import com.start.drones.Drone.Drone;
-import com.start.drones.Drone.DroneRepository;
-import com.start.drones.Drone.Model;
-import com.start.drones.Drone.State;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

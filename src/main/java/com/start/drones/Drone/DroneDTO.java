@@ -1,7 +1,6 @@
 package com.start.drones.Drone;
 
 
-import com.start.drones.Trip.Trip;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +19,8 @@ public class DroneDTO {
 
     @Pattern(regexp = "Lightweight|Middleweight|Cruiserweight|Heavyweight", message = "Model must be one of the following: Lightweight, Middleweight, Cruiserweight, Heavyweight")
     private String model;
-
-    private State state;
+    @Pattern(regexp = "Idle|Flying|Loading|Unloading", message = "State must be one of the following: Idle, Flying, Loading, Unloading")
+    private String droneState;
     @Min(value = 0, message = "Weight must be greater than 0")
     @Max(value = 100, message = "Battery capacity must be between 0 and 100")
     private double batteryPercentage;
@@ -33,7 +32,7 @@ public class DroneDTO {
     public DroneDTO(Drone drone) {
         this.serialNumber = drone.getSerialNumber();
         this.model = drone.getModel().toString();
-        this.state = drone.getState();
+        this.droneState = drone.getDroneState().toString();
         this.batteryPercentage = drone.getBatteryPercentage();
         this.maxWeight = drone.getMaxWeight();
         this.trips = drone.getTrips().stream().map(TripDTO::new).collect(Collectors.toList());
