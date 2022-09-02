@@ -23,7 +23,7 @@ public class MedicationDTO {
 
     public MedicationDTO(String name,  String code, double weight) {
         this.name = name;
-        this.weight = weight;
         this.code = code;
+        this.weight = weight;
     }
 }

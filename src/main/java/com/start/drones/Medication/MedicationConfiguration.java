@@ -32,8 +32,8 @@ public class MedicationConfiguration {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService());
         return new MedicationDTO(
-                fakeValuesService.regexify("[a-zA-Z\\d_-]*"),
-                fakeValuesService.regexify("[a-zA-Z\\d_-]*"),
+                faker.name().firstName(),
+                faker.name().firstName().toUpperCase(),
                 faker.number().numberBetween(1, 300)
         );
     }

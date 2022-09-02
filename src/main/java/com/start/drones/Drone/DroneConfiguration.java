@@ -32,7 +32,7 @@ public class DroneConfiguration {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService());
         return new DroneDTO(
-                faker.name().username(),
+                faker.name().firstName(),
                 fakeValuesService.regexify("Lightweight|Middleweight|Cruiserweight|Heavyweight"),
                 "IDLE",
                 faker.number().numberBetween(0, 100),
