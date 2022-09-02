@@ -12,6 +12,7 @@ import com.start.drones.Trip.TripRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +27,7 @@ public class DroneLoaderService {
         this.tripRepository = tripRepository;
         this.medicationRepository = medicationRepository;
     }
+
     @Async
     public void loadMedicationsToDrone(long droneId, List<Long> medicationids, TripDTO tripDTO) throws InterruptedException {
         Thread.sleep(1000);
@@ -35,7 +37,10 @@ public class DroneLoaderService {
         Trip trip = new Trip();
         trip.setTimeToDeliver(tripDTO.getTimeToDeliver());
         trip.addMedications(medicationEntities);
+        trip.setLoadedAt(LocalDateTime.now());
         tripRepository.save(trip);
+
+
         trip.setDrone(drone);
         tripRepository.save(trip);
 

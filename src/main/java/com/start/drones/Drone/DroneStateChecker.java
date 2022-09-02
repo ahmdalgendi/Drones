@@ -41,7 +41,7 @@ public class DroneStateChecker {
 
     @Async
     void updateDroneState(Drone drone) throws InterruptedException {
-        Optional<Trip> trip = tripRepository.findByDroneOrderByDeliveredAtDesc(drone);
+        Optional<Trip> trip = tripRepository.findFirstByDroneOrderByDeliveredAtDesc(drone);
         if (trip.isPresent() && drone.getDroneState() != DroneState.IDLE) {
             if (drone.getDroneState() == DroneState.DELIVERING) {
                 handleDelivering(drone, trip.get());
@@ -62,7 +62,8 @@ public class DroneStateChecker {
 
     private void handleReturning(Drone drone, Trip trip) {
         LocalDateTime now = LocalDateTime.now();
-        if (trip.getDeliveredAt().plusSeconds(trip.getTimeToDeliver()).isAfter(now)) {
+        LocalDateTime deliveredAt = trip.getDeliveredAt();
+        if (deliveredAt.plusSeconds(trip.getTimeToDeliver()).isAfter(now)) {
             drone.setDroneState(DroneState.IDLE);
             log.info("Drone " + drone.getId() + " is idle");
         } else {

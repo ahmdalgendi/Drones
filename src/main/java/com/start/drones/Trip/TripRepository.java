@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
-    Optional<Trip> findByDroneOrderByDeliveredAtDesc(Drone drone);
+    Optional<Trip> findFirstByDroneOrderByDeliveredAtDesc(Drone drone);
 }

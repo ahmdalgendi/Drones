@@ -127,6 +127,6 @@ public class DroneService {
     }
 
     Optional<Trip> getMostRecentTrip(Drone drone) {
-        return tripRepository.findByDroneOrderByDeliveredAtDesc(drone);
+        return tripRepository.findFirstByDroneOrderByDeliveredAtDesc(drone);
     }
 }
