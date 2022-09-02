@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 @Service
 @Log4j2
 public class DroneStateChecker {
-//    final Logger log = Logger.getLogger(DroneStateChecker.class.getName());
+    //    final Logger log = Logger.getLogger(DroneStateChecker.class.getName());
     final DroneRepository droneRepository;
     final TripRepository tripRepository;
 
@@ -35,7 +35,6 @@ public class DroneStateChecker {
         List<Drone> drones = droneRepository.findAll();
         for (Drone drone : drones) {
             log.info("Checking drone " + drone.getId());
-            log.info("Drone Battery: " + drone.getBatteryPercentage() + "%");
             updateDroneState(drone);
         }
     }
@@ -53,23 +52,24 @@ public class DroneStateChecker {
         } else {
             drone.setDroneState(DroneState.IDLE);
             log.info("Drone " + drone.getId() + " is idle");
-            drone.setBatteryPercentage((drone.getBatteryPercentage() + 1) % 100);
+            if (drone.getBatteryPercentage() < 100) {
+                drone.setBatteryPercentage(drone.getBatteryPercentage() + 1);
+            }
             log.info("Battery percentage of drone " + drone.getId() + " is " + drone.getBatteryPercentage());
         }
         droneRepository.save(drone);
     }
 
     private void handleReturning(Drone drone, Trip trip) {
-        LocalDateTime deliveredAt = trip.getDeliveredAt();
         LocalDateTime now = LocalDateTime.now();
-        if(trip.getDeliveredAt().plusSeconds(trip.getTimeToDeliver()).isAfter(now)){
+        if (trip.getDeliveredAt().plusSeconds(trip.getTimeToDeliver()).isAfter(now)) {
             drone.setDroneState(DroneState.IDLE);
             log.info("Drone " + drone.getId() + " is idle");
-        }else {
+        } else {
             drone.setDroneState(DroneState.RETURNING);
             log.info("Drone " + drone.getId() + " is returning");
             //reduce battery percentage by 0.1
-            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1) % 100);
+            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1));
         }
         droneRepository.save(drone);
     }
@@ -81,7 +81,7 @@ public class DroneStateChecker {
             drone.setDroneState(DroneState.DELIVERING);
             log.info("Drone " + drone.getId() + " is delivering");
             // reduce battery percentage by 0.1% every second
-            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1) % 100);
+            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1));
         } else { // if drone is done delivering
             drone.setDroneState(DroneState.DELIVERED);
             log.info("Drone " + drone.getId() + " is delivered");
@@ -95,7 +95,7 @@ public class DroneStateChecker {
             drone.setDroneState(DroneState.RETURNING);
             log.info("Drone " + drone.getId() + " is returning");
             // reduce battery percentage by 0.1% every second
-            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1) % 100);
+            drone.setBatteryPercentage((drone.getBatteryPercentage() - 0.1));
             droneRepository.save(drone);
         }
 

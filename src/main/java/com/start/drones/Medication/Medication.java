@@ -21,6 +21,18 @@ public class Medication {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    public Medication(String name, double weight, String code) {
+        this.name = name;
+        this.weight = weight;
+        this.code = code;
+    }
+
+    public Medication(MedicationDTO medicationDTO) {
+        this.name = medicationDTO.getName();
+        this.weight = medicationDTO.getWeight();
+        this.code = medicationDTO.getCode();
+    }
+
     @Override
     public String toString() {
         return "Medication{" +
@@ -33,7 +45,6 @@ public class Medication {
     }
 
     private String name;
-    @Min(value = 0, message = "Weight must be greater than 0")
     private double weight;
     private String code;
 //    private String photoUrl;

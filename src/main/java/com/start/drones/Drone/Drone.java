@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class Drone {
     private double maxWeight;
 
     @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL)
-    private List<Trip> trips;
+    private List<Trip> trips = new ArrayList<>();
 
     public Drone(DroneDTO drone) {
         this.serialNumber = drone.getSerialNumber();
