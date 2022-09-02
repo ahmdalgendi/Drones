@@ -1,5 +1,6 @@
 package com.start.drones.Trip;
 
+import com.start.drones.Trip.DTOs.TripDTO;
 import com.start.drones.Trip.Exceptions.TripNotFoundException;
 import org.springframework.stereotype.Service;
 

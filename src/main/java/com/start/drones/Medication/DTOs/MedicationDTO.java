@@ -1,4 +1,4 @@
-package com.start.drones.Medication;
+package com.start.drones.Medication.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

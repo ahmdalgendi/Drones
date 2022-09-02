@@ -1,4 +1,4 @@
-package com.start.drones.Drone;
+package com.start.drones.Drone.DTOs;
 
 import com.start.drones.Medication.Medication;
 import com.start.drones.Trip.Trip;
@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

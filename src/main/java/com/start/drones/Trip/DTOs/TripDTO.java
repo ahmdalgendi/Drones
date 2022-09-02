@@ -1,7 +1,8 @@
-package com.start.drones.Trip;
+package com.start.drones.Trip.DTOs;
 
 import com.start.drones.Drone.Drone;
 import com.start.drones.Medication.Medication;
+import com.start.drones.Trip.Trip;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,11 +1,12 @@
 package com.start.drones.Drone;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.start.drones.Drone.DTOs.CanLoadDTO;
+import com.start.drones.Drone.DTOs.DroneBatteryDTO;
+import com.start.drones.Drone.DTOs.DroneDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/drones")
@@ -33,21 +34,19 @@ public class DroneController {
 
     @JsonAnyGetter
     @GetMapping("{id}/battery")
-    public Map<String, String> showBattery(@PathVariable("id") long id) {
-        Map<String, String> battery = new HashMap<>();
+    public DroneBatteryDTO showBattery(@PathVariable("id") long id) {
+        DroneBatteryDTO battery = new DroneBatteryDTO();
         double level = droneService.findById(id).getBatteryPercentage();
-        battery.put("batteryPercentage", String.valueOf(level));
+        battery.setBatteryPercentage(level);
         return battery;
     }
 
     @JsonAnyGetter
     @GetMapping("{id}/can-load")
-    public Map<String, String> canLoad(@PathVariable("id") long id) {
-        Map<String, String> json = new HashMap<>();
-        boolean canLoad = droneService.canLoad(id);
-        DroneState level = droneService.findById(id).getDroneState();
-        json.put("canLoad", String.valueOf(canLoad));
-        return json;
+    public CanLoadDTO canLoad(@PathVariable("id") long id) {
+        CanLoadDTO canLoadDTO = new CanLoadDTO();
+        canLoadDTO.setCanLoad(droneService.canLoad(id));
+        return canLoadDTO;
     }
 
     @RequestMapping(value = "{id}/load", method = RequestMethod.POST,

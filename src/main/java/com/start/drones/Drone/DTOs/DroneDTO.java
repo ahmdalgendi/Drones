@@ -1,6 +1,7 @@
-package com.start.drones.Drone;
+package com.start.drones.Drone.DTOs;
 
 
+import com.start.drones.Drone.Drone;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
